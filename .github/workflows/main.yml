@@ -15,37 +15,40 @@ env:
   EB_ENVIRONMENT_NAME: Clientes-app-env
 
 jobs:
-
   build:
     name: Build
     runs-on: ubuntu-latest
 
     steps:
       - name: Baixar o código do projeto
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          package-manager-cache: false
 
-      - name: Instalar dependências
-        run: npm ci
+      - name: Instalar dependências sem gerar package-lock.json
+        run: npm install --package-lock=false
 
       - name: Executar build
         run: |
-          echo "Executando o BUILD da aplicação api-produtos..."
+          echo "Executando o BUILD da aplicação clientes-app..."
           npm run build --if-present
 
-      - name: Validar arquivo index.js
+      - name: Validar arquivo de entrada
         run: |
-          if [ ! -f "index.js" ]; then
-            echo "ERRO: o arquivo index.js não foi encontrado."
+          if [ -f "server.js" ]; then
+            node --check server.js
+            echo "Arquivo server.js validado."
+          elif [ -f "index.js" ]; then
+            node --check index.js
+            echo "Arquivo index.js validado."
+          else
+            echo "ERRO: nenhum arquivo server.js ou index.js encontrado."
             exit 1
           fi
-
-          echo "Arquivo index.js encontrado com sucesso."
 
   tests:
     name: Tests
@@ -53,11 +56,11 @@ jobs:
     needs: build
 
     steps:
-      - name: Executar testes
+      - name: Executar testes simulados
         run: |
-          echo "Executando os TESTES da aplicação api-produtos..."
+          echo "Aplicação: clientes-app"
           echo "Por enquanto, os testes estão simulados."
-          echo "Testes executados com sucesso."
+          echo "Nenhum teste automatizado foi executado."
 
   deploy:
     name: Deploy
@@ -66,10 +69,10 @@ jobs:
 
     steps:
       - name: Baixar o código do projeto
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configurar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -101,9 +104,8 @@ jobs:
           echo "Região: $AWS_REGION"
 
           eb deploy "$EB_ENVIRONMENT_NAME" \
-            --label "v-${GITHUB_RUN_NUMBER}-${GITHUB_SHA::7}" \
+            --label "v-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}-${GITHUB_SHA::7}" \
             --timeout 20
 
       - name: Consultar status do ambiente
-        run: |
-          eb status "$EB_ENVIRONMENT_NAME"
+        run: eb status "$EB_ENVIRONMENT_NAME"
