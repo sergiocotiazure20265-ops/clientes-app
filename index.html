@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cadastro de clientes</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    header {
+      padding: 28px 20px;
+      background: #1e40af;
+      color: white;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+    }
+
+    header p {
+      margin: 0;
+    }
+
+    main {
+      width: min(1100px, 100%);
+      margin: 24px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    section {
+      min-width: 0;
+      padding: 24px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px #0000000d;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input,
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    input {
+      margin-bottom: 18px;
+      border: 1px solid #cbd5e1;
+    }
+
+    input:focus {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+
+    button {
+      border: 0;
+      background: #1d4ed8;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    #mensagem {
+      min-height: 20px;
+      margin-bottom: 0;
+    }
+
+    .sucesso {
+      color: #166534;
+    }
+
+    .erro {
+      color: #b91c1c;
+    }
+
+    #total {
+      color: #64748b;
+    }
+
+    .tabela-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background: #f8fafc;
+    }
+
+    td {
+      overflow-wrap: anywhere;
+    }
+
+    #vazio {
+      padding: 16px 0;
+      color: #64748b;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Clientes App</h1>
+    <p>Cadastro e consulta de clientes</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="titulo-cadastro">
+      <h2 id="titulo-cadastro">Cadastrar cliente</h2>
+
+      <form id="formulario">
+        <label for="nome">Nome</label>
+        <input
+          id="nome"
+          type="text"
+          placeholder="Nome completo"
+          autocomplete="name"
+          maxlength="100"
+          required
+        >
+
+        <label for="email">E-mail</label>
+        <input
+          id="email"
+          type="email"
+          placeholder="cliente@email.com"
+          autocomplete="email"
+          maxlength="150"
+          required
+        >
+
+        <label for="telefone">Telefone</label>
+        <input
+          id="telefone"
+          type="tel"
+          placeholder="(21) 99999-9999"
+          autocomplete="tel"
+          maxlength="25"
+          required
+        >
+
+        <button type="submit">Cadastrar</button>
+
+        <p id="mensagem" role="status"></p>
+      </form>
+    </section>
+
+    <section aria-labelledby="titulo-consulta">
+      <h2 id="titulo-consulta">Consultar clientes</h2>
+
+      <label for="pesquisa">Pesquisar por nome ou e-mail</label>
+      <input
+        id="pesquisa"
+        type="search"
+        placeholder="Digite para pesquisar..."
+      >
+
+      <p id="total" aria-live="polite"></p>
+
+      <div class="tabela-container">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Nome</th>
+              <th scope="col">E-mail</th>
+              <th scope="col">Telefone</th>
+            </tr>
+          </thead>
+
+          <tbody id="lista"></tbody>
+        </table>
+      </div>
+
+      <p id="vazio" hidden>Nenhum cliente encontrado.</p>
+    </section>
+  </main>
+
+  <script>
+    const CHAVE = "clientes-app";
+
+    const formulario = document.querySelector("#formulario");
+    const nome = document.querySelector("#nome");
+    const email = document.querySelector("#email");
+    const telefone = document.querySelector("#telefone");
+    const pesquisa = document.querySelector("#pesquisa");
+    const lista = document.querySelector("#lista");
+    const total = document.querySelector("#total");
+    const vazio = document.querySelector("#vazio");
+    const mensagem = document.querySelector("#mensagem");
+
+    let clientes = [];
+
+    function mostrarMensagem(texto, erro = false) {
+      mensagem.textContent = texto;
+      mensagem.className = erro ? "erro" : "sucesso";
+    }
+
+    function consultarClientes() {
+      const termo = pesquisa.value.trim().toLowerCase();
+
+      const encontrados = clientes.filter(cliente =>
+        cliente.nome.toLowerCase().includes(termo) ||
+        cliente.email.toLowerCase().includes(termo)
+      );
+
+      lista.replaceChildren();
+
+      encontrados.forEach(cliente => {
+        const linha = document.createElement("tr");
+
+        [cliente.nome, cliente.email, cliente.telefone].forEach(valor => {
+          const coluna = document.createElement("td");
+
+          // Exibe os dados como texto, sem interpretar HTML.
+          coluna.textContent = valor;
+          linha.appendChild(coluna);
+        });
+
+        lista.appendChild(linha);
+      });
+
+      total.textContent =
+        `${encontrados.length} de ${clientes.length} cliente(s)`;
+
+      vazio.hidden = encontrados.length > 0;
+    }
+
+    formulario.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const cliente = {
+        nome: nome.value.trim(),
+        email: email.value.trim().toLowerCase(),
+        telefone: telefone.value.trim()
+      };
+
+      if (!cliente.nome || !cliente.email || !cliente.telefone) {
+        mostrarMensagem("Preencha todos os campos.", true);
+        return;
+      }
+
+      const emailExiste = clientes.some(
+        item => item.email === cliente.email
+      );
+
+      if (emailExiste) {
+        mostrarMensagem("Este e-mail já está cadastrado.", true);
+        return;
+      }
+
+      const atualizados = [...clientes, cliente];
+
+      try {
+        // localStorage guarda strings: convertemos o array para JSON.
+        localStorage.setItem(CHAVE, JSON.stringify(atualizados));
+
+        clientes = atualizados;
+        formulario.reset();
+        pesquisa.value = "";
+
+        consultarClientes();
+        mostrarMensagem("Cliente cadastrado com sucesso!");
+        nome.focus();
+      } catch {
+        mostrarMensagem(
+          "Não foi possível salvar. Verifique o armazenamento do navegador.",
+          true
+        );
+      }
+    });
+
+    pesquisa.addEventListener("input", consultarClientes);
+
+    // Recupera os cadastros ao abrir a página.
+    try {
+      const dados = JSON.parse(localStorage.getItem(CHAVE) || "[]");
+
+      const valido = Array.isArray(dados) && dados.every(cliente =>
+        cliente !== null &&
+        typeof cliente === "object" &&
+        typeof cliente.nome === "string" &&
+        typeof cliente.email === "string" &&
+        typeof cliente.telefone === "string"
+      );
+
+      if (!valido) {
+        throw new Error("Dados inválidos.");
+      }
+
+      clientes = dados;
+    } catch {
+      mostrarMensagem(
+        "Não foi possível carregar os dados. O cadastro foi desativado para preservar os registros.",
+        true
+      );
+
+      formulario.querySelector("button").disabled = true;
+    }
+
+    consultarClientes();
+  </script>
+</body>
+</html>
