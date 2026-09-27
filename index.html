@@ -1,356 +1,1091 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Cadastro de clientes</title>
+    <meta charset="UTF-8">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f1f5f9;
-      color: #1e293b;
-    }
+    <title>
+        Cadastro de clientes
+    </title>
 
-    header {
-      padding: 28px 20px;
-      background: #1e40af;
-      color: white;
-      text-align: center;
-    }
+    <style>
 
-    header h1 {
-      margin: 0 0 8px;
-    }
+        * {
+            box-sizing: border-box;
+        }
 
-    header p {
-      margin: 0;
-    }
+        body {
 
-    main {
-      width: min(1100px, 100%);
-      margin: 24px auto;
-      padding: 0 16px;
-      display: grid;
-      grid-template-columns: 320px minmax(0, 1fr);
-      gap: 24px;
-      align-items: start;
-    }
+            margin: 0;
 
-    section {
-      min-width: 0;
-      padding: 24px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px #0000000d;
-    }
+            font-family:
+                Arial,
+                sans-serif;
 
-    h2 {
-      margin-top: 0;
-      font-size: 22px;
-    }
+            background: #f1f5f9;
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
+            color: #1e293b;
+        }
 
-    input,
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      font: inherit;
-    }
 
-    input {
-      margin-bottom: 18px;
-      border: 1px solid #cbd5e1;
-    }
+        header {
 
-    input:focus {
-      outline: 2px solid #2563eb;
-      outline-offset: 2px;
-    }
+            padding: 28px 20px;
 
-    button {
-      border: 0;
-      background: #1d4ed8;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+            background: #1e40af;
 
-    button:hover {
-      background: #1e40af;
-    }
+            color: white;
 
-    #mensagem {
-      min-height: 20px;
-      margin-bottom: 0;
-    }
+            text-align: center;
+        }
 
-    .sucesso {
-      color: #166534;
-    }
 
-    .erro {
-      color: #b91c1c;
-    }
+        header h1 {
 
-    #total {
-      color: #64748b;
-    }
+            margin: 0 0 8px;
 
-    .tabela-container {
-      overflow-x: auto;
-    }
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
 
-    th,
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #e2e8f0;
-    }
+        header p {
 
-    th {
-      background: #f8fafc;
-    }
+            margin: 0;
 
-    td {
-      overflow-wrap: anywhere;
-    }
+        }
 
-    #vazio {
-      padding: 16px 0;
-      color: #64748b;
-      text-align: center;
-    }
 
-    @media (max-width: 760px) {
-      main {
-        grid-template-columns: 1fr;
-      }
+        main {
 
-      section {
-        padding: 20px;
-      }
-    }
-  </style>
+            width: min(1200px, 100%);
+
+            margin: 24px auto;
+
+            padding: 0 16px;
+
+            display: grid;
+
+            grid-template-columns:
+                320px
+                minmax(0, 1fr);
+
+            gap: 24px;
+
+            align-items: start;
+        }
+
+
+        section {
+
+            min-width: 0;
+
+            padding: 24px;
+
+            background: white;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 16px
+                #0000000d;
+        }
+
+
+        h2 {
+
+            margin-top: 0;
+
+            font-size: 22px;
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            font-weight: bold;
+        }
+
+
+        input,
+        button {
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            font: inherit;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            margin-bottom: 18px;
+
+            border:
+                1px solid
+                #cbd5e1;
+        }
+
+
+        input:focus {
+
+            outline:
+                2px solid
+                #2563eb;
+
+            outline-offset: 2px;
+        }
+
+
+        button {
+
+            border: 0;
+
+            color: white;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .btn-principal {
+
+            width: 100%;
+
+            background: #1d4ed8;
+        }
+
+
+        .btn-principal:hover {
+
+            background: #1e40af;
+        }
+
+
+        .btn-editar {
+
+            background: #d97706;
+
+            margin-right: 5px;
+        }
+
+
+        .btn-excluir {
+
+            background: #dc2626;
+        }
+
+
+        .btn-cancelar {
+
+            width: 100%;
+
+            margin-top: 10px;
+
+            background: #64748b;
+
+            display: none;
+        }
+
+
+        #mensagem {
+
+            min-height: 20px;
+
+            margin-bottom: 0;
+        }
+
+
+        .sucesso {
+
+            color: #166534;
+        }
+
+
+        .erro {
+
+            color: #b91c1c;
+        }
+
+
+        #total {
+
+            color: #64748b;
+        }
+
+
+        .tabela-container {
+
+            overflow-x: auto;
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            text-align: left;
+        }
+
+
+        th,
+        td {
+
+            padding: 12px;
+
+            border-bottom:
+                1px solid
+                #e2e8f0;
+        }
+
+
+        th {
+
+            background: #f8fafc;
+        }
+
+
+        td {
+
+            overflow-wrap: anywhere;
+        }
+
+
+        #vazio {
+
+            padding: 16px 0;
+
+            color: #64748b;
+
+            text-align: center;
+        }
+
+
+        @media (max-width: 760px) {
+
+            main {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            section {
+
+                padding: 20px;
+
+            }
+
+        }
+
+    </style>
+
 </head>
 
+
 <body>
-  <header>
-    <h1>Clientes App</h1>
-    <p>Cadastro e consulta de clientes</p>
-  </header>
 
-  <main>
-    <section aria-labelledby="titulo-cadastro">
-      <h2 id="titulo-cadastro">Cadastrar cliente</h2>
 
-      <form id="formulario">
-        <label for="nome">Nome</label>
-        <input
-          id="nome"
-          type="text"
-          placeholder="Nome completo"
-          autocomplete="name"
-          maxlength="100"
-          required
-        >
+<header>
 
-        <label for="email">E-mail</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="cliente@email.com"
-          autocomplete="email"
-          maxlength="150"
-          required
-        >
+    <h1>
+        Clientes App
+    </h1>
 
-        <label for="telefone">Telefone</label>
-        <input
-          id="telefone"
-          type="tel"
-          placeholder="(21) 99999-9999"
-          autocomplete="tel"
-          maxlength="25"
-          required
-        >
+    <p>
+        Cadastro e consulta de clientes
+    </p>
 
-        <button type="submit">Cadastrar</button>
+</header>
 
-        <p id="mensagem" role="status"></p>
-      </form>
+
+<main>
+
+
+    <!-- ======================================== -->
+    <!-- CADASTRO -->
+    <!-- ======================================== -->
+
+    <section>
+
+        <h2 id="tituloFormulario">
+            Cadastrar cliente
+        </h2>
+
+
+        <form id="formulario">
+
+
+            <label for="nome">
+                Nome
+            </label>
+
+            <input
+                id="nome"
+                type="text"
+                placeholder="Nome completo"
+                maxlength="150"
+                required
+            >
+
+
+            <label for="email">
+                E-mail
+            </label>
+
+            <input
+                id="email"
+                type="email"
+                placeholder="cliente@email.com"
+                maxlength="50"
+                required
+            >
+
+
+            <button
+                id="botaoSalvar"
+                class="btn-principal"
+                type="submit"
+            >
+                Cadastrar
+            </button>
+
+
+            <button
+                id="botaoCancelar"
+                class="btn-cancelar"
+                type="button"
+            >
+                Cancelar edição
+            </button>
+
+
+            <p
+                id="mensagem"
+                role="status"
+            ></p>
+
+
+        </form>
+
     </section>
 
-    <section aria-labelledby="titulo-consulta">
-      <h2 id="titulo-consulta">Consultar clientes</h2>
 
-      <label for="pesquisa">Pesquisar por nome ou e-mail</label>
-      <input
-        id="pesquisa"
-        type="search"
-        placeholder="Digite para pesquisar..."
-      >
 
-      <p id="total" aria-live="polite"></p>
+    <!-- ======================================== -->
+    <!-- CONSULTA -->
+    <!-- ======================================== -->
 
-      <div class="tabela-container">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Nome</th>
-              <th scope="col">E-mail</th>
-              <th scope="col">Telefone</th>
-            </tr>
-          </thead>
+    <section>
 
-          <tbody id="lista"></tbody>
-        </table>
-      </div>
 
-      <p id="vazio" hidden>Nenhum cliente encontrado.</p>
+        <h2>
+            Consultar clientes
+        </h2>
+
+
+        <label for="pesquisa">
+
+            Pesquisar por nome ou e-mail
+
+        </label>
+
+
+        <input
+            id="pesquisa"
+            type="search"
+            placeholder="Digite para pesquisar..."
+        >
+
+
+        <p id="total"></p>
+
+
+        <div class="tabela-container">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Nome</th>
+
+                        <th>E-mail</th>
+
+                        <th>Data</th>
+
+                        <th>Ações</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="lista"></tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+        <p
+            id="vazio"
+            hidden
+        >
+
+            Nenhum cliente encontrado.
+
+        </p>
+
+
     </section>
-  </main>
 
-  <script>
-    const CHAVE = "clientes-app";
 
-    const formulario = document.querySelector("#formulario");
-    const nome = document.querySelector("#nome");
-    const email = document.querySelector("#email");
-    const telefone = document.querySelector("#telefone");
-    const pesquisa = document.querySelector("#pesquisa");
-    const lista = document.querySelector("#lista");
-    const total = document.querySelector("#total");
-    const vazio = document.querySelector("#vazio");
-    const mensagem = document.querySelector("#mensagem");
+</main>
+
+
+
+<script>
+
+
+    // ===================================================
+    // ELEMENTOS
+    // ===================================================
+
+    const formulario =
+        document.querySelector("#formulario");
+
+    const nome =
+        document.querySelector("#nome");
+
+    const email =
+        document.querySelector("#email");
+
+    const pesquisa =
+        document.querySelector("#pesquisa");
+
+    const lista =
+        document.querySelector("#lista");
+
+    const total =
+        document.querySelector("#total");
+
+    const vazio =
+        document.querySelector("#vazio");
+
+    const mensagem =
+        document.querySelector("#mensagem");
+
+    const tituloFormulario =
+        document.querySelector("#tituloFormulario");
+
+    const botaoSalvar =
+        document.querySelector("#botaoSalvar");
+
+    const botaoCancelar =
+        document.querySelector("#botaoCancelar");
+
 
     let clientes = [];
 
-    function mostrarMensagem(texto, erro = false) {
-      mensagem.textContent = texto;
-      mensagem.className = erro ? "erro" : "sucesso";
+    let idEdicao = null;
+
+
+
+    // ===================================================
+    // MENSAGEM
+    // ===================================================
+
+    function mostrarMensagem(
+        texto,
+        erro = false
+    ) {
+
+        mensagem.textContent =
+            texto;
+
+        mensagem.className =
+            erro
+                ? "erro"
+                : "sucesso";
+
     }
+
+
+
+    // ===================================================
+    // CARREGAR CLIENTES
+    // ===================================================
+
+    async function carregarClientes() {
+
+        try {
+
+            const resposta =
+                await fetch(
+                    "/api/clientes"
+                );
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    "Erro ao consultar clientes."
+                );
+
+            }
+
+
+            clientes =
+                await resposta.json();
+
+
+            consultarClientes();
+
+        }
+        catch (erro) {
+
+            console.error(erro);
+
+            mostrarMensagem(
+                "Não foi possível consultar os clientes.",
+                true
+            );
+
+        }
+
+    }
+
+
+
+    // ===================================================
+    // EXIBIR CLIENTES
+    // ===================================================
 
     function consultarClientes() {
-      const termo = pesquisa.value.trim().toLowerCase();
 
-      const encontrados = clientes.filter(cliente =>
-        cliente.nome.toLowerCase().includes(termo) ||
-        cliente.email.toLowerCase().includes(termo)
-      );
+        const termo =
+            pesquisa
+                .value
+                .trim()
+                .toLowerCase();
 
-      lista.replaceChildren();
 
-      encontrados.forEach(cliente => {
-        const linha = document.createElement("tr");
+        const encontrados =
+            clientes.filter(
+                cliente =>
 
-        [cliente.nome, cliente.email, cliente.telefone].forEach(valor => {
-          const coluna = document.createElement("td");
+                    cliente.nome
+                        .toLowerCase()
+                        .includes(termo)
 
-          // Exibe os dados como texto, sem interpretar HTML.
-          coluna.textContent = valor;
-          linha.appendChild(coluna);
-        });
+                    ||
 
-        lista.appendChild(linha);
-      });
+                    cliente.email
+                        .toLowerCase()
+                        .includes(termo)
+            );
 
-      total.textContent =
-        `${encontrados.length} de ${clientes.length} cliente(s)`;
 
-      vazio.hidden = encontrados.length > 0;
-    }
+        lista.replaceChildren();
 
-    formulario.addEventListener("submit", event => {
-      event.preventDefault();
 
-      const cliente = {
-        nome: nome.value.trim(),
-        email: email.value.trim().toLowerCase(),
-        telefone: telefone.value.trim()
-      };
+        encontrados.forEach(
+            cliente => {
 
-      if (!cliente.nome || !cliente.email || !cliente.telefone) {
-        mostrarMensagem("Preencha todos os campos.", true);
-        return;
-      }
 
-      const emailExiste = clientes.some(
-        item => item.email === cliente.email
-      );
+                const linha =
+                    document.createElement("tr");
 
-      if (emailExiste) {
-        mostrarMensagem("Este e-mail já está cadastrado.", true);
-        return;
-      }
 
-      const atualizados = [...clientes, cliente];
+                // ID
 
-      try {
-        // localStorage guarda strings: convertemos o array para JSON.
-        localStorage.setItem(CHAVE, JSON.stringify(atualizados));
+                const colunaId =
+                    document.createElement("td");
 
-        clientes = atualizados;
-        formulario.reset();
-        pesquisa.value = "";
+                colunaId.textContent =
+                    cliente.id;
 
-        consultarClientes();
-        mostrarMensagem("Cliente cadastrado com sucesso!");
-        nome.focus();
-      } catch {
-        mostrarMensagem(
-          "Não foi possível salvar. Verifique o armazenamento do navegador.",
-          true
+
+                // NOME
+
+                const colunaNome =
+                    document.createElement("td");
+
+                colunaNome.textContent =
+                    cliente.nome;
+
+
+                // EMAIL
+
+                const colunaEmail =
+                    document.createElement("td");
+
+                colunaEmail.textContent =
+                    cliente.email;
+
+
+                // DATA
+
+                const colunaData =
+                    document.createElement("td");
+
+
+                colunaData.textContent =
+                    new Date(
+                        cliente.datahoracadastro
+                    ).toLocaleString(
+                        "pt-BR"
+                    );
+
+
+                // AÇÕES
+
+                const colunaAcoes =
+                    document.createElement("td");
+
+
+                const botaoEditar =
+                    document.createElement("button");
+
+
+                botaoEditar.textContent =
+                    "Editar";
+
+
+                botaoEditar.className =
+                    "btn-editar";
+
+
+                botaoEditar.addEventListener(
+                    "click",
+                    () => editarCliente(cliente)
+                );
+
+
+
+                const botaoExcluir =
+                    document.createElement("button");
+
+
+                botaoExcluir.textContent =
+                    "Excluir";
+
+
+                botaoExcluir.className =
+                    "btn-excluir";
+
+
+                botaoExcluir.addEventListener(
+                    "click",
+                    () => excluirCliente(cliente.id)
+                );
+
+
+
+                colunaAcoes.appendChild(
+                    botaoEditar
+                );
+
+
+                colunaAcoes.appendChild(
+                    botaoExcluir
+                );
+
+
+
+                linha.appendChild(
+                    colunaId
+                );
+
+                linha.appendChild(
+                    colunaNome
+                );
+
+                linha.appendChild(
+                    colunaEmail
+                );
+
+                linha.appendChild(
+                    colunaData
+                );
+
+                linha.appendChild(
+                    colunaAcoes
+                );
+
+
+                lista.appendChild(
+                    linha
+                );
+
+            }
         );
-      }
-    });
 
-    pesquisa.addEventListener("input", consultarClientes);
 
-    // Recupera os cadastros ao abrir a página.
-    try {
-      const dados = JSON.parse(localStorage.getItem(CHAVE) || "[]");
+        total.textContent =
+            `${encontrados.length} de ${clientes.length} cliente(s)`;
 
-      const valido = Array.isArray(dados) && dados.every(cliente =>
-        cliente !== null &&
-        typeof cliente === "object" &&
-        typeof cliente.nome === "string" &&
-        typeof cliente.email === "string" &&
-        typeof cliente.telefone === "string"
-      );
 
-      if (!valido) {
-        throw new Error("Dados inválidos.");
-      }
+        vazio.hidden =
+            encontrados.length > 0;
 
-      clientes = dados;
-    } catch {
-      mostrarMensagem(
-        "Não foi possível carregar os dados. O cadastro foi desativado para preservar os registros.",
-        true
-      );
-
-      formulario.querySelector("button").disabled = true;
     }
 
-    consultarClientes();
-  </script>
+
+
+    // ===================================================
+    // CADASTRAR OU EDITAR
+    // ===================================================
+
+    formulario.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const cliente = {
+
+                nome:
+                    nome.value.trim(),
+
+                email:
+                    email.value
+                        .trim()
+                        .toLowerCase()
+
+            };
+
+
+            if (
+                !cliente.nome ||
+                !cliente.email
+            ) {
+
+                mostrarMensagem(
+                    "Preencha todos os campos.",
+                    true
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+
+                // ==========================================
+                // CADASTRO
+                // ==========================================
+
+                if (idEdicao === null) {
+
+
+                    const resposta =
+                        await fetch(
+                            "/api/clientes",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        cliente
+                                    )
+
+                            }
+                        );
+
+
+                    const dados =
+                        await resposta.json();
+
+
+                    if (!resposta.ok) {
+
+                        throw new Error(
+                            dados.mensagem
+                        );
+
+                    }
+
+
+                    mostrarMensagem(
+                        "Cliente cadastrado com sucesso!"
+                    );
+
+                }
+
+
+                // ==========================================
+                // EDIÇÃO
+                // ==========================================
+
+                else {
+
+
+                    const resposta =
+                        await fetch(
+                            `/api/clientes/${idEdicao}`,
+                            {
+
+                                method: "PUT",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        cliente
+                                    )
+
+                            }
+                        );
+
+
+                    const dados =
+                        await resposta.json();
+
+
+                    if (!resposta.ok) {
+
+                        throw new Error(
+                            dados.mensagem
+                        );
+
+                    }
+
+
+                    mostrarMensagem(
+                        "Cliente atualizado com sucesso!"
+                    );
+
+
+                    cancelarEdicao();
+
+                }
+
+
+                formulario.reset();
+
+                pesquisa.value = "";
+
+
+                await carregarClientes();
+
+
+                nome.focus();
+
+            }
+            catch (erro) {
+
+                mostrarMensagem(
+                    erro.message ||
+                    "Erro ao salvar cliente.",
+                    true
+                );
+
+            }
+
+        }
+    );
+
+
+
+    // ===================================================
+    // EDITAR
+    // ===================================================
+
+    function editarCliente(cliente) {
+
+
+        idEdicao =
+            cliente.id;
+
+
+        nome.value =
+            cliente.nome;
+
+
+        email.value =
+            cliente.email;
+
+
+        tituloFormulario.textContent =
+            "Editar cliente";
+
+
+        botaoSalvar.textContent =
+            "Salvar alterações";
+
+
+        botaoCancelar.style.display =
+            "block";
+
+
+        nome.focus();
+
+    }
+
+
+
+    // ===================================================
+    // CANCELAR EDIÇÃO
+    // ===================================================
+
+    function cancelarEdicao() {
+
+
+        idEdicao =
+            null;
+
+
+        formulario.reset();
+
+
+        tituloFormulario.textContent =
+            "Cadastrar cliente";
+
+
+        botaoSalvar.textContent =
+            "Cadastrar";
+
+
+        botaoCancelar.style.display =
+            "none";
+
+    }
+
+
+    botaoCancelar.addEventListener(
+        "click",
+        cancelarEdicao
+    );
+
+
+
+    // ===================================================
+    // EXCLUIR
+    // ===================================================
+
+    async function excluirCliente(id) {
+
+
+        const confirmar =
+            confirm(
+                "Deseja realmente excluir este cliente?"
+            );
+
+
+        if (!confirmar) {
+
+            return;
+
+        }
+
+
+        try {
+
+
+            const resposta =
+                await fetch(
+                    `/api/clientes/${id}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+
+            const dados =
+                await resposta.json();
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    dados.mensagem
+                );
+
+            }
+
+
+            mostrarMensagem(
+                dados.mensagem
+            );
+
+
+            await carregarClientes();
+
+        }
+        catch (erro) {
+
+            mostrarMensagem(
+                erro.message ||
+                "Erro ao excluir cliente.",
+                true
+            );
+
+        }
+
+    }
+
+
+
+    // ===================================================
+    // PESQUISA
+    // ===================================================
+
+    pesquisa.addEventListener(
+        "input",
+        consultarClientes
+    );
+
+
+
+    // ===================================================
+    // INICIALIZAÇÃO
+    // ===================================================
+
+    carregarClientes();
+
+
+</script>
+
+
 </body>
+
 </html>
